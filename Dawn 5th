@@ -1,0 +1,45 @@
+var data = [ 0, 8, 19, 25, 5, 7, 3, 1, 0, 3, 2, 1, 0, 1, 2, 3, 4, 5, 11, 13 ];
+
+//set SVG size
+var  w = 400 
+var  h = 300 
+var barspacing = 5
+
+//create SVG object
+var svg = d3.select("body")
+    .append('svg')
+    .attr("width", w)
+    .attr("height", h)
+;
+  
+var scales = {
+	x: d3.scale.ordinal().domain(d3.range(0, data.length, 20)).rangePoints([30, 280]),
+  y: d3.scale.linear().domain(d3.extent(data)).range([400 - 10, 40])
+};
+
+var graphAxes ={
+	x: d3.svg.axis().scale(scales.x).orient("bottom").ticks(5),
+  y: d3.svg.axis().scale(scales.y).orient("left").ticks(5),
+};
+
+svg.append("g")
+	.attr("id", "xAxis")
+	.attr("class", "axis")
+	.attr("transform", "translate(30, 280)") 
+	.call(graphAxes.x);
+	
+svg.append("g")
+	.attr("id", "yAxis")
+	.attr("class", "axis")
+	.attr("transform", "translate(40, 10)") 
+	.call(graphAxes.y);
+	
+svg.selectAll("rect.bars")
+  .data(data)
+  .enter()
+  .append("rect")
+  .attr("x", function(d, i) {return xScales.(i);  })
+  .attr("y", function(d) {return yScales.(d);    })
+  .attr("width", 15)
+  .attr("height", function(d,) {return d * 10; })
+  .attr("fill", "Skyblue");
